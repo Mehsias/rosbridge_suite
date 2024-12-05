@@ -226,7 +226,7 @@ def _get_param_names(node_name):
     # This method is called in a service callback; calling a service of the same node
     # will cause a deadlock.
     global _parent_node_name
-    if node_name == _parent_node_name:
+    if node_name == _parent_node_name or node_name == _node.get_fully_qualified_name():
         return []
 
     client = _node.create_client(ListParameters, f"{node_name}/list_parameters")
@@ -238,7 +238,7 @@ def _get_param_names(node_name):
     request = ListParameters.Request()
     future = client.call_async(request)
     if _node.executor:
-        _node.executor.spin_until_future_complete(future)
+        _node.executor.spin_until_future_complete(future, timeout_sec=2.0)
     else:
         rclpy.spin_until_future_complete(_node, future)
     response = future.result()
