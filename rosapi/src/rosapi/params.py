@@ -239,9 +239,8 @@ def _get_param_names(node_name):
 
     client = _node.create_client(ListParameters, f"{node_name}/list_parameters")
 
-    ready = client.wait_for_service(timeout_sec=_timeout_sec)
-    if not ready:
-        raise RuntimeError("Wait for list_parameters service timed out")
+    if not client.service_is_ready():
+        return []
 
     request = ListParameters.Request()
     future = client.call_async(request)
