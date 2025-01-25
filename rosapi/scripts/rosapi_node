@@ -96,7 +96,6 @@ class Rosapi(Node):
         self.create_service(Topics, "~/topics", self.get_topics)
         self.create_service(Interfaces, "~/interfaces", self.get_interfaces)
         self.create_service(TopicsForType, "~/topics_for_type", self.get_topics_for_type)
-
         self.create_service(
             TopicsAndRawTypes,
             "~/topics_and_raw_types",
